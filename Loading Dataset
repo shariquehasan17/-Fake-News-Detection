@@ -1,0 +1,14 @@
+fake = pd.read_csv('Fake.csv')
+real = pd.read_csv('True.csv')
+
+fake['label'] = 1   # 1 = Fake
+real['label'] = 0   # 0 = Real
+
+df = pd.concat([fake, real], ignore_index=True)
+df = df.sample(frac=1, random_state=42).reset_index(drop=True)  # Shuffle
+
+print('Fake news shape :', fake.shape)
+print('Real news shape :', real.shape)
+print('Combined shape  :', df.shape)
+print('\nColumns:', df.columns.tolist())
+df.head()
