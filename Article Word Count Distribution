@@ -1,0 +1,45 @@
+df['word_count'] = df['text'].apply(lambda x: len(str(x).split()))
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+df[df['label']==1]['word_count'].hist(bins=50, ax=axes[0], color='#E74C3C', alpha=0.7, edgecolor='black')
+axes[0].set_title('Fake News - Word Count Distribution', fontsize=13, fontweight='bold')
+axes[0].set_xlabel('Word Count')
+axes[0].set_ylabel('Frequency')
+axes[0].set_xlim(0, 2000)
+
+df[df['label']==0]['word_count'].hist(bins=50, ax=axes[1], color='#2ECC71', alpha=0.7, edgecolor='black')
+axes[1].set_title('Real News - Word Count Distribution', fontsize=13, fontweight='bold')
+axes[1].set_xlabel('Word Count')
+axes[1].set_ylabel('Frequency')
+axes[1].set_xlim(0, 2000)
+
+plt.suptitle('Word Count Distribution by Label', fontsize=15, fontweight='bold')
+plt.tight_layout()
+plt.savefig('02_word_count_distribution.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: 02_word_count_distribution.png')
+
+if 'subject' in df.columns:
+    fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+
+    fake_subj = fake['subject'].value_counts().head(6)
+    real_subj = real['subject'].value_counts().head(6)
+
+    axes[0].pie(fake_subj, labels=fake_subj.index, autopct='%1.1f%%',
+        startangle=140, colors=plt.cm.Reds(np.linspace(0.4,0.9,len(fake_subj))),
+        wedgeprops={'edgecolor':'white','linewidth':1.5})
+    axes[0].set_title('Fake News - Subject Distribution', fontsize=13, fontweight='bold')
+
+    axes[1].pie(real_subj, labels=real_subj.index, autopct='%1.1f%%',
+        startangle=140, colors=plt.cm.Greens(np.linspace(0.4,0.9,len(real_subj))),
+        wedgeprops={'edgecolor':'white','linewidth':1.5})
+    axes[1].set_title('Real News - Subject Distribution', fontsize=13, fontweight='bold')
+
+    plt.suptitle('News Subject Distribution', fontsize=15, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig('03_subject_distribution.png', dpi=150, bbox_inches='tight')
+    plt.show()
+    print('Saved: 03_subject_distribution.png')
+else:
+    print('No subject column found - skipping subject chart')
