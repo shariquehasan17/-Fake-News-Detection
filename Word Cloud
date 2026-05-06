@@ -1,0 +1,24 @@
+from wordcloud import WordCloud
+
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+fake_text = ' '.join(df[df['label']==1]['clean_text'].tolist())
+real_text = ' '.join(df[df['label']==0]['clean_text'].tolist())
+
+wc_fake = WordCloud(width=800, height=400, background_color='white',
+    colormap='Reds', max_words=100).generate(fake_text)
+axes[0].imshow(wc_fake, interpolation='bilinear')
+axes[0].axis('off')
+axes[0].set_title('Fake News - Most Frequent Words', fontsize=14, fontweight='bold', color='#E74C3C')
+
+wc_real = WordCloud(width=800, height=400, background_color='white',
+    colormap='Greens', max_words=100).generate(real_text)
+axes[1].imshow(wc_real, interpolation='bilinear')
+axes[1].axis('off')
+axes[1].set_title('Real News - Most Frequent Words', fontsize=14, fontweight='bold', color='#27AE60')
+
+plt.suptitle('Word Cloud - Fake vs Real News', fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('04_wordcloud.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: 04_wordcloud.png')
