@@ -1,0 +1,29 @@
+label_counts = df['label'].value_counts()
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+axes[0].pie(
+    label_counts,
+    labels=['Fake News', 'Real News'],
+    autopct='%1.2f%%',
+    colors=['#E74C3C', '#2ECC71'],
+    startangle=140,
+    explode=(0.05, 0),
+    shadow=True,
+    wedgeprops={'edgecolor':'white','linewidth':2}
+)
+axes[0].set_title('Fake vs Real News Distribution', fontsize=14, fontweight='bold')
+
+bars = axes[1].bar(['Fake News','Real News'], label_counts.values,
+    color=['#E74C3C','#2ECC71'], edgecolor='black', width=0.5)
+for bar in bars:
+    axes[1].text(bar.get_x()+bar.get_width()/2, bar.get_height()+100,
+        f'{bar.get_height():,}', ha='center', fontsize=13, fontweight='bold')
+axes[1].set_title('Article Count by Label', fontsize=14, fontweight='bold')
+axes[1].set_ylabel('Count')
+axes[1].set_ylim(0, label_counts.max()*1.15)
+
+plt.suptitle('Fake News Dataset - Class Distribution', fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('01_class_distribution.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Saved: 01_class_distribution.png')
